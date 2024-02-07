@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="page-header">
-            <h1 class="display-4">LOGIN</h1>
+            <h1 class="display-4" style="margin-top : 20px">LOGIN</h1>
         </div>
         <!-- submit은 기본적으로 폼제출시 브라우저가 페이지를 새로고침하므로 해당동작을 막기 위해 prevent사용 -->
         <form @submit.prevent="doLogin">
@@ -49,7 +49,10 @@ export default {
 
                     localStorage.setItem("token", token);
                     localStorage.setItem("role", role);
-                    this.$router.push("/");
+                // created 함수는 reload될때 1번만 실행되는 hook함수
+                // 그런데m router.push를 통한 화면전환은 reload를 실행시키지 않으므로, created함수 호출이 되지않음
+                    // this.$router.push("/");
+                    window.location.href = "/";
                 }else{
                     console.log("200 OK, but not token");
                     alert("login failed");

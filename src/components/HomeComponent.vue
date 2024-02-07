@@ -1,5 +1,5 @@
 <template>
-    <div class="home">
+    <div class="home" style="margin-top : 17%">
         <b-container class="text-center">
           <b-row>
             <b-col>

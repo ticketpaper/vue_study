@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="page-header">
-            <h1 class="display-4">회원 목록</h1>
+            <h1 class="display-4" style="margin-top : 20px">회원 목록</h1>
         </div>
         <table class="table">
             <thead>
@@ -17,7 +17,7 @@
                     <td>{{member.id}}</td>
                     <td>{{member.name}}</td>
                     <td>{{member.email}}</td>
-                    <td>{{member.orderCount}}</td>
+                    <td><a :href="`/member/${member.id}/orders`">{{member.orderCount}}</a></td>
                 </tr>
             </tbody>
         </table>
