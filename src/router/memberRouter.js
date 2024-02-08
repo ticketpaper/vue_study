@@ -24,5 +24,6 @@ export const memberRoutes = [
         path: '/mypage',
         name: 'MyPage',
         component: MyPage,
+        props: true,
     },
 ];

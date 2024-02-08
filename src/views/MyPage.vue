@@ -6,10 +6,19 @@
           <table class="table">
               <thead>
                   <tr>
-                      <th>id</th>
-                      <th>이름</th>
-                      <th>이메일</th>
-                      <th>주문 수량</th>
+                    <td>이름</td><td>{{memberInfo.name}}</td>
+                  </tr>
+                  <tr>
+                    <td>이메일</td><td>{{memberInfo.email}}</td>
+                  </tr>
+                  <tr>
+                    <td>도시</td><td>{{memberInfo.city}}</td>
+                  </tr>
+                  <tr>
+                    <td>상세주소</td><td>{{memberInfo.street}}</td>
+                  </tr>
+                  <tr>
+                    <td>우편번호</td><td>{{memberInfo.zipcode}}</td>
                   </tr>
               </thead>
               <tbody>
@@ -20,18 +29,38 @@
 
     <OrderListComponent
     :isAdmin="false"
-    :apiUrl="`http://localhost:8084/member/${id}/orders`"
+    :apiUrl="`/member/myOrders`"
     />
   </template>
   
   <script>
+  import axios from 'axios';
   import OrderListComponent from '@/components/OrderListComponent.vue';
   
   export default {
-    props:['id'],
     components:{
         OrderListComponent
-    }
+    },
+    data(){
+        return{
+            memberInfo: {},
+        }
+    },
+    created(){
+        this.fetchMember();
+    },
+    methods:{
+        async fetchMember(){
+            try{
+            const token = localStorage.getItem("token");
+            const headers = token ? {Authorization : `Bearer ${token}`} : {};
+            const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/member/myInfo`,{headers});
+            this.memberInfo = response.data;
+            }catch(error){
+                console.log(error)
+            }
+        },
+    },
   }
   </script>
 
