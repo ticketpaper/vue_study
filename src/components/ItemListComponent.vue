@@ -58,6 +58,8 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex';
+
 export default {
     props: ['isAdmin','pageTitle'],
     data(){
@@ -82,6 +84,7 @@ export default {
     },
     
     methods: {
+        ...mapActions(['addToCart']),
         addCart(){
             const orderItems = Object.keys(this.selectedItems)
                                 .filter(key=>this.selectedItems[key]===true)
@@ -89,7 +92,10 @@ export default {
                                     const item = this.itemList.find(item => item.id == key);
                                     return {itemId:item.id, name: item.name, count:item.quantity};
                                 });
-            orderItems.forEach(item => this.$store.commit('addToCart', item));
+            // mutation 호출 방식
+            // orderItems.forEach(item => this.$store.commit('addToCart', item));
+            // actions 호출 방식
+            orderItems.forEach(item => this.$store.dispatch('addToCart', item));
             
         },
         async deleteItem(itemId){
@@ -113,8 +119,18 @@ export default {
                                     const item = this.itemList.find(item => item.id == key);
                                     return {itemId:item.id, count:item.quantity};
                                 });
+
+            if(orderItems.length < 1){
+                alert("주문할 물건이 없습니다.");
+                return;
+            }
+            if(!confirm(`${orderItems.length}개의 상품을 주문하시겠습니까?`)){
+                console.log("주문이 취소 되었습니다.")
+                return;
+            }
             const token = localStorage.getItem("token");
             const headers = token ? {Authorization : `Bearer ${token}`} : {};
+            
             try{
                 await axios.post(`${process.env.VUE_APP_API_BASE_URL}/order/create`,orderItems,{headers});               
                 console.log(orderItems);
@@ -127,6 +143,7 @@ export default {
         },
         searchItems(){
           this.itemList=[];
+          this.selectedItems=[];
           this.currentPage=0;
           this.isLastPage=false;
           this.loadItems();

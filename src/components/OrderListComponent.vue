@@ -19,7 +19,7 @@
               <td>{{ order.memberEmail }}</td>
               <td>{{ order.orderStatus }}</td>
               <td v-if="isAdmin === true">
-                <button  v-if="order.orderStatus === 'ORDERED'" @click.stop="cancelOrder(order.id)">CANCEL</button>
+                <button class="btn btn-secondary" v-if="order.orderStatus === 'ORDERED'" @click.stop="cancelOrder(order.id)">CANCEL</button>
               </td>
             </tr>
             <tr v-if="visibleOrder.has(order.id)">
